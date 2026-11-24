@@ -1,0 +1,131 @@
+manifest: 1
+name: Inventory
+slug: inventory
+version: 1.0.0
+description: Stock, suppliers and purchase orders.
+category: Operations
+color: "#0e7c66"
+toolchain: "2026.10"
+
+tables:
+  suppliers:
+    columns:
+      name:  { type: text, required: true, max_length: 160 }
+      city:  { type: text }
+      state: { type: text, max_length: 2 }
+    rls:
+      select: "true"
+      insert: "true"
+      update: "true"
+
+  items:
+    columns:
+      sku:      { type: text, required: true, unique: true }
+      name:     { type: text, required: true }
+      kind:     { type: enum, values: [raw, component, packaging, finished] }
+      uom:      { type: text, default: ea }
+      min_qty:  { type: "numeric(12,2)", default: 0 }
+      on_hand:  { type: "numeric(12,2)", default: 0 }
+      reserved: { type: "numeric(12,2)", default: 0 }
+      incoming: { type: "numeric(12,2)", default: 0 }
+    rls:
+      select: "true"
+      insert: "true"
+      update: "true"
+
+  purchase_orders:
+    columns:
+      number:      { type: text, required: true }
+      supplier_id: { type: ref, table: suppliers, required: true }
+      status:      { type: enum, values: [draft, approved, sent, received, cancelled], default: draft }
+      total:       { type: "numeric(12,2)", default: 0 }
+    rls:
+      select: "true"
+      insert: "true"
+      update: "true"
+
+  purchase_order_lines:
+    columns:
+      purchase_order_id: { type: ref, table: purchase_orders, required: true, on_delete: cascade }
+      line_no:           { type: int, required: true }
+      item_id:           { type: ref, table: items, required: true }
+      qty:               { type: "numeric(12,2)", required: true }
+      uom:               { type: text, default: ea }
+      unit_price:        { type: "numeric(12,2)" }
+      received_qty:      { type: "numeric(12,2)", default: 0 }
+    rls:
+      select: "true"
+      insert: "true"
+      update: "true"
+
+queries:
+  - id: list_stock
+    sql: |
+      select id, sku, name, kind, uom, min_qty, on_hand, reserved, incoming,
+             (on_hand - reserved) as available,
+             case
+               when on_hand <= 0 then 'out'
+               when (on_hand - reserved) < 0 then 'short'
+               when on_hand < min_qty then 'below_min'
+               else 'ok'
+             end as situation
+      from items
+      where deleted_at is null
+      order by
+        case
+          when on_hand <= 0 then 0
+          when (on_hand - reserved) < 0 then 1
+          when on_hand < min_qty then 2
+          else 3
+        end,
+        name
+    rate_limit: 60/min
+
+  - id: list_purchase_orders
+    sql: |
+      select po.id, po.number, po.status, po.total, s.name as supplier,
+             (select count(*) from purchase_order_lines l where l.purchase_order_id = po.id) as line_count
+      from purchase_orders po
+      join suppliers s on s.id = po.supplier_id
+      where po.deleted_at is null
+      order by po.number desc
+    rate_limit: 60/min
+
+  - id: get_purchase_order
+    sql: |
+      select po.id, po.number, po.status, po.total, s.name as supplier, s.city, s.state
+      from purchase_orders po
+      join suppliers s on s.id = po.supplier_id
+      where po.id = :id
+    args:
+      id: { type: uuid }
+    rate_limit: 60/min
+
+  - id: list_purchase_order_lines
+    sql: |
+      select l.line_no, i.sku, i.name as item, l.qty, l.uom, l.unit_price, l.received_qty
+      from purchase_order_lines l
+      join items i on i.id = l.item_id
+      where l.purchase_order_id = :id
+      order by l.line_no
+    args:
+      id: { type: uuid }
+    rate_limit: 60/min
+
+actions:
+  - id: receive_purchase_order
+    kind: sql
+    sql: |
+      update items i
+         set on_hand = i.on_hand + l.qty,
+             incoming = greatest(i.incoming - l.qty, 0),
+             updated_at = now()
+        from purchase_order_lines l
+       where l.item_id = i.id
+         and l.purchase_order_id = :id
+         and (select status from purchase_orders where id = :id) <> 'received';
+      update purchase_order_lines set received_qty = qty where purchase_order_id = :id;
+      update purchase_orders set status = 'received', updated_at = now() where id = :id and status <> 'received'
+    args:
+      id: { type: uuid }
+    rate_limit: 20/min

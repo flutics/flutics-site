@@ -1,0 +1,144 @@
+manifest: 1
+name: Sales CRM
+slug: sales-crm
+version: 1.4.2
+description: Companies, deals and pipeline stages for the sales team.
+category: Sales Ops
+color: "#0ea5e9"
+toolchain: "2026.10"
+owners: [group:sales-ops]
+
+tables:
+  companies:
+    visibility: public            # any app in the workspace may import it (read-only, RLS applies)
+    columns:
+      name:     { type: text, required: true, max_length: 120 }
+      domain:   { type: text, unique: true }
+      segment:  { type: enum, values: [smb, mid_market, enterprise] }
+      owner_id: { type: user, default: $user_id }
+    rls:
+      select: "true"
+      insert: "owner_id = current_user_id() or has_group('sales-ops')"
+      update: "owner_id = current_user_id() or has_group('sales-ops')"
+
+  deals:
+    columns:
+      company_id: { type: ref, table: companies, on_delete: cascade, required: true }
+      title:      { type: text, required: true, max_length: 200 }
+      stage:      { type: enum, values: [lead, qualified, proposal, won, lost], default: lead }
+      amount:     { type: "numeric(12,2)", min: 0 }
+      close_date: { type: date }
+      owner_id:   { type: user, default: $user_id }
+    indexes: [[stage], [owner_id, close_date]]
+    rls:
+      select: "true"
+      insert: "owner_id = current_user_id() or has_group('sales-ops')"
+      update: "owner_id = current_user_id() or has_group('sales-ops')"
+      delete: "has_group('sales-ops')"
+
+queries:
+  - id: list_deals
+    sql: |
+      select d.id, d.title, d.stage, d.amount, d.close_date, d.company_id, c.name as company,
+             d.owner_id, u.name as owner_name, d.updated_at, count(*) over () as total
+      from deals d
+      join companies c on c.id = d.company_id
+      left join meadow_users u on u.id = d.owner_id
+      where (:stage is null or d.stage = :stage)
+        and (:search is null or d.title ilike '%' || :search || '%' or c.name ilike '%' || :search || '%')
+      order by d.updated_at desc
+      limit :limit offset :offset
+    args:
+      stage:  { type: enum, ref: deals.stage, optional: true }
+      search: { type: text, optional: true, max_length: 100 }
+      limit:  { type: int, default: 50, min: 1, max: 200 }
+      offset: { type: int, default: 0, min: 0 }
+    rate_limit: 120/min
+
+  - id: list_companies
+    sql: select id, name, domain, segment from companies order by name
+    rate_limit: 60/min
+
+  - id: pipeline_summary
+    sql: |
+      select stage, count(*) as deals, coalesce(sum(amount), 0) as amount
+      from deals group by stage order by stage
+    rate_limit: 60/min
+
+  - id: my_open_deals
+    sql: |
+      select id, title, stage, amount from deals
+      where owner_id = :user_id and stage not in ('won', 'lost')
+    args:
+      user_id: { type: user, source: session }
+    rate_limit: 30/min
+
+  - id: list_owners
+    sql: select id, name from meadow_users order by name
+    rate_limit: 30/min
+
+actions:
+  - id: create_deal
+    kind: insert_data
+    table: deals
+    args:
+      company_id: {}
+      title:      {}
+      stage:      { optional: true }
+      amount:     { optional: true }
+      close_date: { optional: true }
+      owner_id:   { optional: true }
+    rate_limit: 30/min
+
+  - id: update_deal
+    kind: merge_data
+    table: deals
+    key: [id]
+    args:
+      id:         {}
+      company_id: { optional: true }
+      title:      { optional: true }
+      stage:      { optional: true }
+      amount:     { optional: true }
+      close_date: { optional: true }
+      owner_id:   { optional: true }
+    rate_limit: 60/min
+
+  - id: delete_deal
+    kind: delete_data
+    table: deals
+    key: [id]
+    args:
+      id: {}
+    rate_limit: 20/min
+
+  - id: create_company
+    kind: insert_data
+    table: companies
+    args:
+      name:    {}
+      domain:  { optional: true }
+      segment: { optional: true }
+    rate_limit: 20/min
+
+exports:
+  - name: deals_v1
+    description: Deals with company name; stable contract for reporting apps.
+    visibility: protected
+    share_with: [app:revenue-report, workspace:acme-finance]
+    sql: |
+      select d.id, d.title, d.stage, d.amount, d.close_date, c.name as company, d.owner_id, d.updated_at
+      from deals d join companies c on c.id = d.company_id
+    columns:
+      id: uuid
+      title: text
+      stage: text
+      amount: number
+      close_date: date
+      company: text
+      owner_id: uuid
+      updated_at: timestamp
+  - name: create_deal
+    kind: action
+    visibility: protected
+    share_with: [app:revenue-report]

@@ -1,0 +1,107 @@
+manifest: 1
+name: Billing
+slug: billing
+version: 1.0.0
+description: Invoices and installments linked to customer accounts.
+category: Finance
+color: "#1d4ed8"
+toolchain: "2026.10"
+
+tables:
+  invoices:
+    columns:
+      number:            { type: text, required: true }
+      account_name:      { type: text, required: true }
+      status:            { type: enum, values: [draft, open, paid, void], default: open }
+      issue_date:        { type: date }
+      total:             { type: "numeric(12,2)", default: 0 }
+      paid:              { type: "numeric(12,2)", default: 0 }
+      installment_count: { type: int, default: 1 }
+    rls:
+      select: "true"
+      insert: "true"
+      update: "true"
+
+  invoice_lines:
+    columns:
+      invoice_id: { type: ref, table: invoices, required: true, on_delete: cascade }
+      line_no:    { type: int, required: true }
+      description: { type: text, required: true }
+      qty:        { type: "numeric(12,2)", required: true }
+      uom:        { type: text, default: ea }
+      unit_price: { type: "numeric(12,2)" }
+      line_total: { type: "numeric(12,2)" }
+    rls:
+      select: "true"
+
+  installments:
+    columns:
+      invoice_id: { type: ref, table: invoices, required: true, on_delete: cascade }
+      seq:        { type: int, required: true }
+      due_date:   { type: date }
+      amount:     { type: "numeric(12,2)", required: true }
+      status:     { type: enum, values: [open, paid], default: open }
+      reference:  { type: text }
+    rls:
+      select: "true"
+      update: "true"
+
+queries:
+  - id: list_invoices
+    sql: |
+      select id, number, account_name, status, issue_date, total, paid,
+             (total - paid) as outstanding
+      from invoices
+      where deleted_at is null
+      order by issue_date desc, number desc
+    rate_limit: 60/min
+
+  - id: get_invoice
+    sql: |
+      select id, number, account_name, status, issue_date, total, paid,
+             (total - paid) as outstanding, installment_count
+      from invoices
+      where id = :id
+    args:
+      id: { type: uuid }
+    rate_limit: 60/min
+
+  - id: list_invoice_lines
+    sql: |
+      select line_no, description, qty, uom, unit_price, line_total
+      from invoice_lines
+      where invoice_id = :id
+      order by line_no
+    args:
+      id: { type: uuid }
+    rate_limit: 60/min
+
+  - id: list_installments
+    sql: |
+      select id, seq, due_date, amount, status, reference
+      from installments
+      where invoice_id = :id
+      order by seq
+    args:
+      id: { type: uuid }
+    rate_limit: 60/min
+
+actions:
+  - id: record_payment
+    kind: sql
+    sql: |
+      update installments
+         set status = 'paid',
+             reference = coalesce(nullif(:reference, ''), reference),
+             updated_at = now()
+       where id = :id and status <> 'paid';
+      update invoices i
+         set paid = (select coalesce(sum(amount),0) from installments s where s.invoice_id = i.id and s.status = 'paid'),
+             status = case when (select coalesce(sum(amount),0) from installments s where s.invoice_id = i.id and s.status = 'paid') >= i.total
+                           then 'paid' else 'open' end,
+             updated_at = now()
+       where i.id = (select invoice_id from installments where id = :id)
+    args:
+      id: { type: uuid }
+      reference: { type: text, optional: true }
+    rate_limit: 30/min

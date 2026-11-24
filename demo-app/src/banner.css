@@ -1,0 +1,44 @@
+.flutics-demo-root { display: flex; flex-direction: column; height: 100vh; min-height: 100vh; }
+.flutics-demo-root .mk { flex: 1; min-height: 0; }
+.flutics-demo-banner {
+  flex: 0 0 auto;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  height: 36px;
+  padding: 0 14px;
+  background: #0b3d2e;
+  color: #e8f6f0;
+  font: 12px/1 ui-sans-serif, system-ui, sans-serif;
+  z-index: 20;
+}
+.flutics-demo-banner img { display: block; }
+.flutics-demo-banner strong { font-weight: 650; letter-spacing: -0.01em; }
+.flutics-demo-banner span, .flutics-demo-banner em { color: #b7d4c8; }
+.flutics-demo-banner em { font-style: normal; color: #9fe0c6; }
+.flutics-demo-banner button {
+  margin-left: auto;
+  border: 1px solid #2e6b58;
+  background: transparent;
+  color: #e8f6f0;
+  border-radius: 7px;
+  padding: 4px 10px;
+  font: 600 11px system-ui;
+  cursor: pointer;
+}
+.flutics-demo-banner button:hover { background: #12563f; }
+.flutics-demo-banner button:disabled { opacity: 0.6; cursor: default; }
+.flutics-demo-boot, .flutics-demo-boot-err {
+  font: 14px/1.5 ui-sans-serif, system-ui, sans-serif;
+  padding: 80px 32px;
+  color: #102d2c;
+  text-align: center;
+}
+.flutics-demo-root .mk,
+.flutics-demo-root .mk.focus .content {
+  height: auto !important;
+}
+.flutics-demo-root .mk {
+  flex: 1 1 auto;
+  min-height: 0;
+}

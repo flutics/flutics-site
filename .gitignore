@@ -2,3 +2,7 @@ node_modules
 site-output
 *.log
 .DS_Store
+demo-app/node_modules
+flutics-demo.zip
+demo-app/public/tc
+demo-app/public/apps
