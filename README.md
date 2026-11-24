@@ -44,9 +44,18 @@ Other hosts, not part of this repo: `docs.flutics.com` (documentation), `login.f
 
 ## Demo
 
-The demo runs Postgres in the browser with [PGlite](https://pglite.dev/), persisted to IndexedDB (`idb://flutics-demo`). Seed data is the fictional U.S. lighting company **Alder Light Co.** (USD). You can create a quote, receive a purchase order, issue an invoice, drag a pipeline card, and use **Reset demo** to reseed.
+The demo at [demo.flutics.com](https://demo.flutics.com) is the real Flutics 1.8.9 workspace shell and app toolchain, with the Go `/api/v1` backend emulated in the browser by PGlite (Postgres in WASM, IndexedDB). It boots into the Alder Light Co. workspace (fictional, en-US, USD) with three apps: Sales CRM (the real product app), Inventory, and Billing.
 
-It is a working shell, not the product: no sandboxed iframes, no YAML manifests at runtime, no SSO, no row-level security or MCP in the browser. Shipping, payment recording and PDFs are out of scope.
+```bash
+npm run dev:demo     # http://127.0.0.1:5174
+npm run build:demo   # site-output/demo
+npm run preview:demo # http://127.0.0.1:4174
+```
+
+Cloudflare Pages project for demo.flutics.com: build command `npm run build:demo`, output `site-output/demo`.
+
+It is not a hosted Flutics server: there is no real session cookie, SSO, RLS enforcement, MCP, sandboxed cross-origin content domain, or file/webhook pipeline. **Reset demo** reseeds the in-browser database.
+
 
 ## Copy rules
 

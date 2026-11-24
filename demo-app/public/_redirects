@@ -1,0 +1,4 @@
+/apps/*    /apps/:splat    200
+/tc/*      /tc/:splat      200
+/brand/*   /brand/:splat   200
+/*         /index.html     200
