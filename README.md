@@ -9,6 +9,10 @@ Two static Vite + React sites in one repo:
 
 `npm run build` produces both. Do not deploy `site-output/` from this machine; connect the repo to Cloudflare Pages (see below).
 
+## Contributing
+
+After clone, enable local checks: `git config core.hooksPath .githooks` (runs TypeScript `tsc --noEmit` on the site and demo-app when present).
+
 ## Local preview
 
 ```bash
