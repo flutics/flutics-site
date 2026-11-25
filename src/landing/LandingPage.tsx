@@ -93,7 +93,7 @@ export function LandingPage() {
                 <span className="dot" />
                 <span className="dot" />
                 <span className="dot" />
-                <span className="url">demo.flutics.com · Alder Light Co. (fictional)</span>
+                <span className="url">flutics.com/demo · sample CRM (fictional)</span>
               </div>
               <img
                 src="/screens/orders.png"
@@ -346,7 +346,7 @@ export function LandingPage() {
               <a className="res" href={DEMO_URL}>
                 <span>
                   <span className="name">Live demo</span>
-                  <div className="meta">Runs in the browser, no server · demo.flutics.com</div>
+                  <div className="meta">Runs in the browser, no server · flutics.com/demo</div>
                 </span>
               </a>
             </div>
@@ -357,8 +357,8 @@ export function LandingPage() {
           <div className="wrap">
             <h2 id="cta-title">Try it with fictional data, in this browser.</h2>
             <p className="lead">
-              Create a quote, receive a purchase order, issue an invoice. Reset the demo whenever you want a clean
-              company again.
+              Edit a YAML app manifest and watch the table update — add rows, run actions, export CSV. Reset whenever you
+              want a clean sample again.
             </p>
             <div className="hero-cta">
               <a className="btn on-dark" href={DEMO_URL}>
