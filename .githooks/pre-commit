@@ -1,6 +1,7 @@
 #!/bin/sh
 set -e
 npx --no-install tsc --noEmit
+npm test
 if [ -f demo-app/tsconfig.json ]; then
 	npm --prefix demo-app exec --no -- tsc --noEmit
 fi

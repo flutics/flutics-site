@@ -1,5 +1,5 @@
 export const SITE_URL = 'https://flutics.com';
-export const DEMO_URL = 'https://demo.flutics.com';
+export const DEMO_URL = '/demo';
 export const LOGIN_URL = 'https://login.flutics.com';
 export const DOCS_URL = 'https://docs.flutics.com';
 
