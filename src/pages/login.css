@@ -15,7 +15,7 @@
 .lg-form label { display: block; font-size: var(--fl-text-sm); font-weight: 500; margin-bottom: 6px; }
 .lg-form input {
   width: 100%; height: 46px; padding: 0 12px; margin-bottom: 12px;
-  border: 1px solid #aab0c6; border-radius: var(--fl-radius);
+  border: 1px solid #7d84a0; border-radius: var(--fl-radius);
   font-size: var(--fl-text-md); color: var(--fl-ink);
 }
 .lg-btn {

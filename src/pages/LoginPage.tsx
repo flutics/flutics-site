@@ -32,7 +32,7 @@ export function LoginPage() {
             }}
           >
             <label htmlFor="lg-email">Work email</label>
-            <input id="lg-email" type="email" autoComplete="off" required />
+            <input id="lg-email" type="email" autoComplete="email" required />
             <button type="submit" className="lg-btn">
               Continue with SSO
             </button>

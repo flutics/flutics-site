@@ -21,15 +21,44 @@ export function DemoShell({ children }: { children: ReactNode }) {
   const [navOpen, setNavOpen] = useState(false);
   const switcher = useRef<HTMLDetailsElement>(null);
 
+  const side = useRef<HTMLElement>(null);
+  const body = useRef<HTMLDivElement>(null);
+  const menu = useRef<HTMLButtonElement>(null);
+
+  const closeSwitcher = () => {
+    const el = switcher.current;
+    if (el?.contains(document.activeElement)) el.querySelector('summary')?.focus();
+    el?.removeAttribute('open');
+  };
+
   useEffect(() => {
     const onKey = (e: KeyboardEvent) => {
       if (e.key !== 'Escape') return;
+      closeSwitcher();
       setNavOpen(false);
-      switcher.current?.removeAttribute('open');
     };
+    // The drawer only exists on narrow screens; widening the window closes it.
+    const wide = matchMedia('(min-width: 769px)');
+    const onWide = () => wide.matches && setNavOpen(false);
     window.addEventListener('keydown', onKey);
-    return () => window.removeEventListener('keydown', onKey);
+    wide.addEventListener('change', onWide);
+    return () => {
+      window.removeEventListener('keydown', onKey);
+      wide.removeEventListener('change', onWide);
+    };
   }, []);
+
+  // While the drawer is open, focus stays in it; closing returns focus to the menu button.
+  useEffect(() => {
+    if (!navOpen) return;
+    const content = body.current!;
+    content.inert = true;
+    side.current!.querySelector('summary')!.focus();
+    return () => {
+      content.inert = false;
+      menu.current?.focus();
+    };
+  }, [navOpen]);
 
   const item = (name: string, icon?: ReactNode) => (
     <button
@@ -56,7 +85,7 @@ export function DemoShell({ children }: { children: ReactNode }) {
   return (
     <div className="sh">
       {navOpen && <button type="button" className="sh-backdrop" aria-label="Close menu" onClick={() => setNavOpen(false)} />}
-      <aside id="sh-side" className={navOpen ? 'sh-side open' : 'sh-side'}>
+      <aside id="sh-side" ref={side} className={navOpen ? 'sh-side open' : 'sh-side'}>
         <details className="sh-ws" ref={switcher}>
           <summary>
             <span className="sh-icon ws" aria-hidden="true">
@@ -76,7 +105,7 @@ export function DemoShell({ children }: { children: ReactNode }) {
                 aria-pressed={w === workspace}
                 onClick={() => {
                   setWorkspace(w);
-                  switcher.current?.removeAttribute('open');
+                  closeSwitcher();
                 }}
               >
                 {w}
@@ -97,9 +126,10 @@ export function DemoShell({ children }: { children: ReactNode }) {
         </div>
       </aside>
 
-      <div className="sh-body">
+      <div className="sh-body" ref={body}>
         <header className="sh-top">
           <button
+            ref={menu}
             type="button"
             className="sh-menu"
             aria-label="Menu"

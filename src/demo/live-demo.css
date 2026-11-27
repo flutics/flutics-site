@@ -99,6 +99,11 @@
   color: #e6e9ff;
 }
 
+.sh .ld-yaml:focus-visible {
+  outline: 3px solid var(--fl-marigold);
+  outline-offset: -3px;
+}
+
 .ld-error {
   margin: 0;
   padding: 10px 16px 14px;
