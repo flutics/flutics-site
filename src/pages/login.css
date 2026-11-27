@@ -1,0 +1,50 @@
+.lg {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  min-height: 100vh;
+  min-height: 100dvh;
+  background: var(--fl-surface);
+  color: var(--fl-ink);
+  font-family: var(--fl-font);
+}
+.lg :focus-visible { outline: 2px solid var(--fl-blue); outline-offset: 2px; }
+.lg-main { display: flex; flex-direction: column; padding: 32px clamp(20px, 6vw, 96px); }
+.lg-brand { align-self: flex-start; }
+.lg-form { margin: auto 0; padding: 48px 0; width: 100%; max-width: 360px; }
+.lg-form h1 { font-size: var(--fl-text-xl); font-weight: 800; letter-spacing: -0.02em; margin-bottom: 28px; }
+.lg-form label { display: block; font-size: var(--fl-text-sm); font-weight: 500; margin-bottom: 6px; }
+.lg-form input {
+  width: 100%; height: 46px; padding: 0 12px; margin-bottom: 12px;
+  border: 1px solid #aab0c6; border-radius: var(--fl-radius);
+  font-size: var(--fl-text-md); color: var(--fl-ink);
+}
+.lg-btn {
+  width: 100%; height: 46px;
+  border: 1px solid var(--fl-ink); border-radius: var(--fl-radius);
+  background: var(--fl-surface); color: var(--fl-ink);
+  font-weight: 700; font-size: var(--fl-text-sm); cursor: pointer;
+}
+.lg-btn:hover { background: var(--fl-paper); }
+.lg-btn.primary { background: var(--fl-blue); border-color: var(--fl-blue); color: #fff; }
+.lg-btn.primary:hover { background: var(--fl-blue-deep); }
+.lg-or { display: flex; align-items: center; gap: 12px; margin: 22px 0; font-size: var(--fl-text-xs); color: var(--fl-muted); }
+.lg-or::before, .lg-or::after { content: ''; flex: 1; border-top: 1px solid var(--fl-line); }
+.lg-note { margin-top: 20px; font-size: var(--fl-text-sm); color: var(--fl-muted); }
+.lg-note a { color: var(--fl-blue); font-weight: 700; white-space: nowrap; }
+
+.lg-side {
+  display: flex; flex-direction: column; justify-content: center; gap: 32px;
+  padding: 48px clamp(20px, 6vw, 96px);
+  background: var(--fl-blue); color: #fff;
+}
+.lg-side p { font-size: clamp(24px, 3vw, 40px); font-weight: 800; letter-spacing: -0.02em; line-height: 1.15; max-width: 14ch; }
+.lg-side pre { margin: 0; font-family: var(--fl-mono); font-size: clamp(13px, 1.25vw, 17px); line-height: 1.7; overflow-x: auto; }
+.lg-side code { display: block; font: inherit; border-left: 4px solid var(--fl-marigold); padding-left: 16px; margin-bottom: 20px; color: #dde2ff; }
+.lg-side b { color: #fff; }
+
+@media (max-width: 860px) {
+  .lg { grid-template-columns: minmax(0, 1fr); }
+  .lg-main { padding-top: 24px; padding-bottom: 0; }
+  .lg-form { margin: 0 auto; }
+  .lg-brand { align-self: center; }
+}

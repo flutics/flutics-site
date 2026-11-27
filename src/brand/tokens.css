@@ -1,0 +1,22 @@
+/* Flutics brand tokens. Colors are flat; no gradients. */
+:root {
+  --fl-ink: #141a33;
+  --fl-blue: #2b3fd6;
+  --fl-blue-deep: #1f2ea6;
+  --fl-marigold: #ffb000;
+  --fl-paper: #f4f5f9;
+  --fl-surface: #ffffff;
+  --fl-line: #dcdfea;
+  --fl-muted: #565d7a;
+  --fl-danger: #a8242f;
+
+  --fl-font: 'Schibsted Grotesk', system-ui, -apple-system, 'Segoe UI', sans-serif;
+  --fl-mono: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  --fl-text-xs: 12px;
+  --fl-text-sm: 14px;
+  --fl-text-md: 16px;
+  --fl-text-lg: 20px;
+  --fl-text-xl: 32px;
+
+  --fl-radius: 6px;
+}

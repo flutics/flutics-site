@@ -1,62 +1,68 @@
-.ld-page {
-  min-height: 100vh;
-  background: var(--canvas);
-}
-
-.ld-head {
-  position: sticky;
-  top: 0;
-  z-index: 20;
-  background: rgba(247, 250, 249, 0.92);
-  border-bottom: 1px solid var(--line);
-  backdrop-filter: blur(10px);
-}
-
-.ld-head-inner {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 16px;
-  padding: 14px 24px;
-}
-
-.ld-head-actions {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 10px;
-  align-items: center;
-}
-
-.ld-main {
-  padding: 32px 24px 56px;
+.ld {
+  padding: 24px;
 }
 
 .ld-intro {
-  margin-bottom: 28px;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 20px;
 }
 
 .ld-intro h1 {
-  font-size: clamp(28px, 4vw, 40px);
-  margin: 0 0 10px;
+  font-size: var(--fl-text-xl);
+  letter-spacing: -0.02em;
+}
+
+.ld-intro p {
+  color: var(--fl-muted);
+}
+
+/* The global .btn is the landing page pill; inside the shell it is a compact control. */
+.sh .btn {
+  border-radius: var(--fl-radius);
+}
+
+.sh .btn:hover {
+  transform: none;
+}
+
+.sh .btn.primary {
+  background: var(--fl-blue);
+}
+
+.sh .btn.primary:hover {
+  background: var(--fl-blue-deep);
+}
+
+.sh .btn.ghost {
+  border-color: var(--fl-line);
+  color: var(--fl-ink);
+}
+
+.sh .btn.ghost:hover {
+  border-color: var(--fl-blue);
 }
 
 .ld-split {
   display: grid;
-  grid-template-columns: minmax(0, 1fr) minmax(0, 1.1fr);
+  grid-template-columns: minmax(0, 1.4fr) minmax(0, 1fr);
   gap: 20px;
   align-items: start;
 }
 
-@media (max-width: 900px) {
+@media (max-width: 1100px) {
   .ld-split {
     grid-template-columns: 1fr;
   }
 }
 
 .ld-panel {
-  background: var(--card);
-  border: 1px solid var(--line);
-  border-radius: var(--radius);
+  background: var(--fl-surface);
+  border: 1px solid var(--fl-line);
+  border-radius: var(--fl-radius);
   overflow: hidden;
   min-height: 280px;
 }
@@ -68,8 +74,8 @@
   justify-content: space-between;
   gap: 12px;
   padding: 14px 16px;
-  border-bottom: 1px solid var(--line);
-  background: #fbfdfc;
+  border-bottom: 1px solid var(--fl-line);
+  background: var(--fl-paper);
 }
 
 .ld-panel-head h2 {
@@ -89,22 +95,21 @@
   font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
   font-size: 13px;
   line-height: 1.5;
-  color: var(--ink);
-  background: #0f1f1e;
-  color: #e8f4f0;
+  background: var(--fl-ink);
+  color: #e6e9ff;
 }
 
 .ld-error {
   margin: 0;
   padding: 10px 16px 14px;
-  color: #9a1b1b;
+  color: var(--fl-danger);
   background: #fff3f3;
   font-size: 14px;
   border-top: 1px solid #f0d4d4;
 }
 
 .ld-muted {
-  color: var(--muted);
+  color: var(--fl-muted);
   padding: 20px 16px;
 }
 
@@ -134,16 +139,14 @@
 .ld-table td {
   text-align: left;
   padding: 10px 12px;
-  border-bottom: 1px solid var(--line);
+  border-bottom: 1px solid var(--fl-line);
   vertical-align: top;
 }
 
 .ld-table th {
   font-size: 12px;
-  text-transform: uppercase;
-  letter-spacing: 0.06em;
-  color: var(--muted);
-  background: #fbfdfc;
+  color: var(--fl-muted);
+  background: var(--fl-paper);
 }
 
 .ld-row-actions {
@@ -155,7 +158,7 @@
   border: 0;
   padding: 0;
   margin-right: 10px;
-  color: var(--teal);
+  color: var(--fl-blue);
   font-weight: 650;
   cursor: pointer;
   text-decoration: underline;
@@ -163,13 +166,13 @@
 }
 
 .linkish.danger {
-  color: #a13232;
+  color: var(--fl-danger);
 }
 
 .ld-form {
   padding: 16px;
-  border-top: 1px solid var(--line);
-  background: #fbfdfc;
+  border-top: 1px solid var(--fl-line);
+  background: var(--fl-paper);
 }
 
 .ld-form h3 {
@@ -195,9 +198,9 @@
 .ld-form-grid select {
   height: 40px;
   padding: 0 10px;
-  border: 1px solid var(--line);
-  border-radius: 10px;
-  background: var(--card);
+  border: 1px solid var(--fl-line);
+  border-radius: var(--fl-radius);
+  background: var(--fl-surface);
 }
 
 .ld-form-actions {
@@ -207,8 +210,8 @@
 }
 
 .ld-footnote {
-  margin-top: 24px;
-  color: var(--muted);
+  margin-top: 20px;
+  color: var(--fl-muted);
   font-size: 14px;
 }
 
@@ -230,7 +233,7 @@
   }
   .ld-table tr {
     display: block;
-    border-bottom: 1px solid var(--line);
+    border-bottom: 1px solid var(--fl-line);
     padding: 8px 0;
   }
   .ld-table td {
@@ -243,6 +246,6 @@
   .ld-table td::before {
     content: attr(data-label);
     font-weight: 650;
-    color: var(--muted);
+    color: var(--fl-muted);
   }
 }

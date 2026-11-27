@@ -1,7 +1,5 @@
 import { useCallback, useMemo, useState } from 'react';
-import { Link } from 'react-router-dom';
-import { Brand } from '../brand/Logo';
-import { LOGIN_URL } from '../config';
+import { DemoShell } from '../demo/shell/DemoShell';
 import {
   applyBulkUpdate,
   coerceRow,
@@ -148,53 +146,22 @@ export function LiveDemoPage() {
   };
 
   return (
-    <div className="ld-page">
-      <header className="ld-head">
-        <div className="wrap ld-head-inner">
-          <Link className="brand" to="/" aria-label="Flutics home">
-            <Brand />
-          </Link>
-          <div className="ld-head-actions">
-            <button type="button" className="btn ghost" onClick={resetAll}>
-              Reset sample data
-            </button>
-            <a className="btn primary" href={LOGIN_URL}>
-              Get started
-            </a>
-          </div>
-        </div>
-      </header>
-
-      <main className="ld-main wrap">
+    <DemoShell>
+      <div className="ld">
         <header className="ld-intro">
-          <p className="eyebrow">Live demo</p>
-          <h1>{manifest?.name ?? 'Manifest app'}</h1>
-          <p className="lead">
-            {manifest?.description ??
-              'Edit the YAML on the left. The table and actions on the right update with no server and no account.'}
-          </p>
+          <div>
+            <h1>{manifest?.name ?? 'Manifest app'}</h1>
+            <p>
+              {manifest?.description ??
+                'Edit the YAML manifest. The table and actions update with no server and no account.'}
+            </p>
+          </div>
+          <button type="button" className="btn ghost sm" onClick={resetAll}>
+            Reset sample data
+          </button>
         </header>
 
         <div className="ld-split">
-          <section className="ld-panel ld-editor" aria-labelledby="yaml-title">
-            <div className="ld-panel-head">
-              <h2 id="yaml-title">App manifest (YAML)</h2>
-            </div>
-            <textarea
-              className="ld-yaml"
-              value={yaml}
-              onChange={(e) => onYamlChange(e.target.value)}
-              spellCheck={false}
-              aria-invalid={!parsed.ok}
-              aria-describedby={!parsed.ok ? 'yaml-error' : undefined}
-            />
-            {!parsed.ok && (
-              <p id="yaml-error" className="ld-error" role="alert">
-                {parsed.error}
-              </p>
-            )}
-          </section>
-
           <section className="ld-panel ld-preview" aria-labelledby="preview-title">
             <div className="ld-panel-head">
               <h2 id="preview-title">{manifest?.table.label ?? 'Preview'}</h2>
@@ -319,12 +286,31 @@ export function LiveDemoPage() {
               </>
             )}
           </section>
+
+          <section className="ld-panel ld-editor" aria-labelledby="yaml-title">
+            <div className="ld-panel-head">
+              <h2 id="yaml-title">App manifest (YAML)</h2>
+            </div>
+            <textarea
+              className="ld-yaml"
+              value={yaml}
+              onChange={(e) => onYamlChange(e.target.value)}
+              spellCheck={false}
+              aria-invalid={!parsed.ok}
+              aria-describedby={!parsed.ok ? 'yaml-error' : undefined}
+            />
+            {!parsed.ok && (
+              <p id="yaml-error" className="ld-error" role="alert">
+                {parsed.error}
+              </p>
+            )}
+          </section>
         </div>
 
         <p className="ld-footnote">
-          Runs entirely in your browser. Data stays in this tab (localStorage). Works offline after the page loads.
+          Runs entirely in your browser. Data stays in this browser (localStorage). Works offline after the page loads.
         </p>
-      </main>
-    </div>
+      </div>
+    </DemoShell>
   );
 }

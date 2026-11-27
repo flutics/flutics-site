@@ -845,11 +845,11 @@ function NewAppModal({ open, onClose }: { open: boolean; onClose: () => void }) 
       </p>
       <div className="fld" style={{ marginBottom: 10 }}>
         <label>CLI</label>
-        <CliLine text={`meadow init my-app && cd my-app && meadow publish --workspace ${ws.slug}`} />
+        <CliLine text={`flutics init my-app && cd my-app && flutics publish --workspace ${ws.slug}`} />
       </div>
       <div className="fld" style={{ marginBottom: 10 }}>
         <label>MCP server</label>
-        <CliLine text={`meadow mcp --url ${origin}`} />
+        <CliLine text={`flutics mcp --url ${origin}`} />
       </div>
       <div className="fld">
         <label>Git push-to-deploy</label>
