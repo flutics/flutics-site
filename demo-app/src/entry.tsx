@@ -26,7 +26,7 @@ function Banner({ onReset }: { onReset: () => Promise<void> }) {
         <img src="/brand/logo.svg" alt="" width={18} height={18} />
         <strong>Flutics demo</strong>
       </a>
-      <span>Alder Light Co. · fictional · Postgres in this browser</span>
+      <span>Fictional data</span>
       {msg && <em>{msg}</em>}
       <button
         type="button"

@@ -43,6 +43,3 @@
   flex: 1 1 auto;
   min-height: 0;
 }
-@media (max-width: 600px) {
-  .flutics-demo-banner > span { display: none; }
-}

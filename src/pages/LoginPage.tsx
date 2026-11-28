@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { Brand } from '../brand/Logo';
 import { DEMO_URL } from '../config';
@@ -13,6 +13,13 @@ const HUB: [title: string, text: string][] = [
 // Design skeleton: nothing is submitted anywhere. Real sign-in lives at LOGIN_URL.
 export function LoginPage() {
   const [tried, setTried] = useState(false);
+  useEffect(() => {
+    const previous = document.title;
+    document.title = 'Sign in · Flutics';
+    return () => {
+      document.title = previous;
+    };
+  }, []);
   return (
     <div className="lg">
       <main className="lg-main">
