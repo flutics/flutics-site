@@ -357,8 +357,8 @@ export function LandingPage() {
           <div className="wrap">
             <h2 id="cta-title">Try it with fictional data, in this browser.</h2>
             <p className="lead">
-              Edit a YAML app manifest and watch the table update — add rows, run actions, export CSV. Reset whenever you
-              want a clean sample again.
+              Explore a sample company with sales, inventory and billing apps. Change records, and reset whenever you want a
+              clean sample again.
             </p>
             <div className="hero-cta">
               <a className="btn on-dark" href={DEMO_URL}>

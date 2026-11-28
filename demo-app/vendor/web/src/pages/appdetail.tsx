@@ -288,7 +288,7 @@ function ManifestView({ app }: { app: any }) {
   return (
     <>
       <div className="sect-h">
-        <span className="mono">meadow.yaml</span>
+        <span className="mono">flutics.yaml</span>
         <button className="btn sm gh" onClick={() => copy(app.manifest_yaml).then(() => toast('Copied to clipboard'))}>
           <I n="copy" />
           Copy

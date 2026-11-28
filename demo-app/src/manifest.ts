@@ -54,7 +54,7 @@ function colDefault(spec: any): string {
 export async function applyManifestSchema(db: PGlite, m: Manifest) {
   const schema = schemaName(m.slug);
   await db.exec(`create schema if not exists ${schema}`);
-  await db.exec(`create or replace view ${schema}.meadow_users as select id, name, email from public.demo_users`);
+  await db.exec(`create or replace view ${schema}.flutics_users as select id, name, email from public.demo_users`);
   for (const [table, def] of Object.entries(m.tables || {})) {
     const cols: string[] = [
       'id uuid primary key default gen_random_uuid()',

@@ -1,0 +1,51 @@
+.lg {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  min-height: 100vh;
+  min-height: 100dvh;
+  background: var(--card);
+  color: var(--ink);
+}
+.lg :focus-visible { outline: 2px solid var(--teal); outline-offset: 2px; }
+.lg-main { display: flex; flex-direction: column; padding: 32px clamp(20px, 6vw, 96px); }
+.lg-brand { align-self: flex-start; }
+.lg-form { margin: auto 0; padding: 48px 0; width: 100%; max-width: 360px; }
+.lg-form h1 { font-size: 32px; font-weight: 800; letter-spacing: -0.02em; margin-bottom: 28px; }
+.lg-form label { display: block; font-size: 14px; font-weight: 500; margin-bottom: 6px; }
+.lg-form input {
+  width: 100%; height: 46px; padding: 0 12px; margin-bottom: 12px;
+  border: 1px solid #6f8a85; border-radius: 10px;
+  font-size: 16px; color: var(--ink);
+}
+.lg-btn {
+  width: 100%; height: 46px;
+  border: 1px solid var(--ink); border-radius: 10px;
+  background: var(--card); color: var(--ink);
+  font-weight: 700; font-size: 14px; cursor: pointer;
+}
+.lg-btn:hover { background: var(--canvas); }
+.lg-btn.primary { background: var(--teal); border-color: var(--teal); color: #fff; }
+.lg-btn.primary:hover { background: var(--forest); }
+.lg-or { display: flex; align-items: center; gap: 12px; margin: 22px 0; font-size: 12px; color: var(--muted); }
+.lg-or::before, .lg-or::after { content: ''; flex: 1; border-top: 1px solid var(--line); }
+.lg-note { margin-top: 20px; font-size: 14px; color: var(--muted); }
+.lg-note a { color: var(--teal); font-weight: 700; white-space: nowrap; }
+
+.lg-side {
+  display: flex; flex-direction: column; justify-content: center; gap: 20px;
+  padding: 48px clamp(20px, 6vw, 96px);
+  background: var(--hero); color: var(--hero-fg);
+}
+.lg-side h2 { font-size: clamp(30px, 3.6vw, 52px); max-width: 12ch; }
+.lg-side > p { font-size: 19px; color: var(--hero-muted); max-width: 34ch; }
+.lg-side ul { list-style: none; margin: 20px 0 0; padding: 0; max-width: 440px; }
+.lg-side li { padding: 16px 0; border-top: 1px solid rgb(255 255 255 / 0.16); }
+.lg-side b { display: block; color: var(--mint); }
+.lg-side span { color: var(--hero-muted); }
+
+@media (max-width: 860px) {
+  .lg { grid-template-columns: minmax(0, 1fr); }
+  .lg-main { padding-top: 24px; padding-bottom: 0; }
+  .lg-form { margin: 0 auto; }
+  .lg-brand { align-self: center; }
+}

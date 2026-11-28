@@ -1,13 +1,13 @@
 # Flutics marketing site and browser demo
 
-Two static Vite + React sites in one repo:
+Two Vite + React apps in one repo:
 
-| Site | URL | Build command | Output |
+| App | URL | Build command | Output |
 |---|---|---|---|
-| Marketing | https://flutics.com | `npm run build:www` | `site-output/www` |
-| Live demo | https://demo.flutics.com | `npm run build:demo` | `site-output/demo` |
+| Marketing site, including the demo | https://flutics.com and https://flutics.com/demo | `npm run build` | `site-output/www` |
+| Demo alone (optional) | https://demo.flutics.com | `npm run build:demo` | `site-output/demo` |
 
-`npm run build` produces both. Do not deploy `site-output/` from this machine; connect the repo to Cloudflare Pages (see below).
+`npm run build` builds the demo and copies it into the site (`scripts/add-demo.mjs`). `npm run dev` serves the marketing site only; use `npm run dev:demo` for the demo. Do not deploy `site-output/` from this machine; connect the repo to Cloudflare Pages (see below).
 
 ## Contributing
 
@@ -32,7 +32,7 @@ Create **two** Pages projects from this repository. Do not start a deploy until 
 
 **Project 1 — flutics.com**
 - Production branch: `main`
-- Build command: `npm run build:www`
+- Build command: `npm run build:www` (includes the demo)
 - Build output directory: `site-output/www`
 - Custom domain: `flutics.com` (and `www.flutics.com` if you want it)
 
@@ -48,7 +48,7 @@ Other hosts, not part of this repo: `docs.flutics.com` (documentation), `login.f
 
 ## Demo
 
-The demo at [demo.flutics.com](https://demo.flutics.com) is the real Flutics 1.8.9 workspace shell and app toolchain, with the Go `/api/v1` backend emulated in the browser by PGlite (Postgres in WASM, IndexedDB). It boots into the Alder Light Co. workspace (fictional, en-US, USD) with three apps: Sales CRM (the real product app), Inventory, and Billing.
+The demo at [flutics.com/demo](https://flutics.com/demo) is the real Flutics 1.8.9 workspace shell and app toolchain, with the Go `/api/v1` backend emulated in the browser by PGlite (Postgres in WASM, IndexedDB). It boots into the Alder Light Co. workspace (fictional, en-US, USD) with three apps: Sales CRM (the real product app), Inventory, and Billing.
 
 ```bash
 npm run dev:demo     # http://127.0.0.1:5174
