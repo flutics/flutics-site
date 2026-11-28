@@ -1,1 +1,17 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-label="Flutics"><rect width="64" height="64" rx="14" fill="#2b3fd6"/><path fill="#fff" d="M15 13h10v38H15zM29 13h21v10H29z"/><path fill="#ffb000" d="M29 28h15v10H29z"/></svg>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 112" fill="none" role="img" aria-labelledby="flutics-mark-title">
+  <title id="flutics-mark-title">Flutics</title>
+  <defs>
+    <linearGradient id="fluticsTop" x1="8" y1="4" x2="120" y2="72" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#3AD68A"/>
+      <stop offset=".42" stop-color="#22C5A6"/>
+      <stop offset="1" stop-color="#0E7C66"/>
+    </linearGradient>
+    <linearGradient id="fluticsBottom" x1="4" y1="48" x2="118" y2="112" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#0E7C66"/>
+      <stop offset=".55" stop-color="#0B5148"/>
+      <stop offset="1" stop-color="#082C23"/>
+    </linearGradient>
+  </defs>
+  <path fill="url(#fluticsTop)" d="M10 62C16 26 46 7 78 8c16.5.5 28.5-2.5 40-8-2.2 22-16.5 38.5-43 44.5-21.5 5-41 8-65 17.5Z"/>
+  <path fill="url(#fluticsBottom)" d="M8 104c5-26 24-44.5 50-51 22.5-5.5 41.5-3 60-13.5-4.5 24-20 41-46 47.5-23.5 6-46 10-64 17Z"/>
+</svg>

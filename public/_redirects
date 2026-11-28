@@ -1,2 +1,3 @@
 # Cloudflare Pages SPA fallback. Used by both flutics.com and demo.flutics.com projects.
+/w/*  /demo         200
 /*    /index.html   200

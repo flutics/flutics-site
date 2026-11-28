@@ -22,8 +22,10 @@ function Banner({ onReset }: { onReset: () => Promise<void> }) {
   }, []);
   return (
     <div className="flutics-demo-banner">
-      <img src="/brand/logo.svg" alt="" width={18} height={18} />
-      <strong>Flutics demo</strong>
+      <a href="/" title="Back to flutics.com">
+        <img src="/brand/logo.svg" alt="" width={18} height={18} />
+        <strong>Flutics demo</strong>
+      </a>
       <span>Alder Light Co. · fictional · Postgres in this browser</span>
       {msg && <em>{msg}</em>}
       <button

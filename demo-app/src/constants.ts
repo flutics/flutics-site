@@ -1,7 +1,7 @@
 export const WS_SLUG = 'alder';
 export const WS_NAME = 'Alder Light';
 export const ORG_NAME = 'Alder Light Co.';
-export const SCHEMA_VERSION = '1';
+export const SCHEMA_VERSION = '2';
 export const TOOLCHAIN = '2026.10';
 export const IDB = 'idb://flutics-demo-core';
 

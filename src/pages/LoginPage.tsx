@@ -4,10 +4,10 @@ import { Brand } from '../brand/Logo';
 import { DEMO_URL } from '../config';
 import './login.css';
 
-const MANIFEST: [key: string, lines: string][] = [
-  ['tables', '  orders:\n    columns: [customer, total, status]'],
-  ['queries', '  open_orders:\n    from: orders'],
-  ['actions', '  approve_order:\n    set: { status: approved }'],
+const HUB: [title: string, text: string][] = [
+  ['Run daily work', 'Sales, stock and billing in one place, working from the same records.'],
+  ['See what’s happening', 'Live numbers for your team, without copying them into spreadsheets.'],
+  ['Put AI to work', 'Assistants can look things up and take action, with the same permissions as you.'],
 ];
 
 // Design skeleton: nothing is submitted anywhere. Real sign-in lives at LOGIN_URL.
@@ -17,7 +17,7 @@ export function LoginPage() {
     <div className="lg">
       <main className="lg-main">
         <Link to="/" className="lg-brand" aria-label="Flutics home">
-          <Brand height={32} />
+          <Brand />
         </Link>
         <div className="lg-form">
           <h1>Sign in to your workspace</h1>
@@ -39,21 +39,22 @@ export function LoginPage() {
           </form>
           <p className="lg-note" role="status">
             {tried ? 'Sign-in isn’t connected in this preview.' : 'Design preview. Nothing you type is sent.'}{' '}
-            <Link to={DEMO_URL}>Open the demo</Link>
+            <a href={DEMO_URL}>Open the demo</a>
           </p>
         </div>
       </main>
 
-      <aside className="lg-side" aria-label="Example app manifest">
-        <p>One YAML file is the whole app.</p>
-        <pre>
-          {MANIFEST.map(([key, lines]) => (
-            <code key={key}>
-              <b>{key}:</b>
-              {`\n${lines}\n`}
-            </code>
+      <aside className="lg-side" aria-labelledby="lg-pitch">
+        <h2 id="lg-pitch">Your company’s digital hub.</h2>
+        <p>An AI-first place to run operations and understand your business.</p>
+        <ul>
+          {HUB.map(([title, text]) => (
+            <li key={title}>
+              <b>{title}</b>
+              <span>{text}</span>
+            </li>
           ))}
-        </pre>
+        </ul>
       </aside>
     </div>
   );

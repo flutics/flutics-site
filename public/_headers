@@ -10,3 +10,12 @@
 
 /assets/*
   Cache-Control: public, max-age=31536000, immutable
+
+# Browser demo at /demo: its apps run in same-origin frames.
+/apps/*
+  ! X-Frame-Options
+  X-Frame-Options: SAMEORIGIN
+  Cache-Control: public, max-age=60
+
+/tc/*
+  Cache-Control: public, max-age=31536000, immutable
